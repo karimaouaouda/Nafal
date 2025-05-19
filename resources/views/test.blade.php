@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    @vite('resources/css/app.css')
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="pdf-content p-4 border border-black w-[210mm]">
+        <div class="pdf-head flex justify-between border-b border-indigo-400 border-b-2 pb-2">
+            <div class="flex flex-col justify-between">
+                <h1 class="text-2xl capitalize font-bold text-sky-800">
+                    nifal al haditha trading est.
+                </h1>
+                <h2 class="text-xl capitalize">
+                    safety - electrical - mechanical
+                </h2>
+                <h2 class="text-xl capitalize">
+                    c.r. 2055154968
+                </h2>
+            </div>
+
+            <div>
+                <img src="{{ 'data:image/png;base64,'.$image }}" alt="logo" class="w-28 h-28">
+            </div>
+
+            <div class="flex flex-col justify-between" dir="rtl">
+                <h1 class="text-2xl capitalize font-bold text-sky-800">
+                    مؤسسة نفال الحديثة التجارية
+                </h1>
+                <h2 class="text-xl capitalize">
+                    السلامة - الكهربائية - الميكانيكية
+                </h2>
+                <h2 class="text-xl capitalize">
+                    س.ت. 2055154968
+                </h2>
+            </div>
+        </div>
+
+        <div class="pdf-body py-4 flex flex-col space-y-2 items-center">
+            <h1 class="text-xl uppercase">
+                Quotation
+            </h1>
+            <div class="w-full flex justify-between border border-black">
+                <div class="flex flex-col border-r border-black p-2 pr-8">
+                    <h2 class="text-lg capitalize">
+                        Quotation : SQ-NF-2025-24
+                    </h2>
+                    <h2 class="text-lg capitalize">
+                        Date: 27/03/2025
+                    </h2>
+                    <h2 class="text-lg capitalize">
+                        Attention :
+                    </h2>
+                    <h2 class="text-lg capitalize">
+                        CUS REF
+                    </h2>
+                </div>
+                <div class="flex flex-col flex-1 p-2">
+                    <h2 class="text-xl capitalize">
+                        Customer Name: شركة نفال الحديثة
+                    </h2>
+                    <h2 class="text-xl capitalize" dir="rtl">
+                        إسم الزبون: شركة نفال الحديثة
+                    </h2>
+                    <h2 class="text-xl capitalize">
+                        VatNo. 312661809300003
+                    </h2>
+                    <h2 class="text-xl capitalize">
+                        address: al jubail - al badiyah st. makkah dist
+                    </h2>
+                    <h2 class="text-xl capitalize" dir="rtl">
+                        العنوان: الجبيل - شارع البادية - حي مكة
+                    </h2>
+
+                </div>
+
+            </div>
+            <div class="table-container w-full">
+                <table class="table-auto w-full border border-black">
+                    <thead>
+                        <tr class="border-b border-black">
+                            <th class="p-2 text-left">Item</th>
+                            <th class="p-2 text-left">Description</th>
+                            <th class="p-2 text-left">Unity</th>
+                            <th class="p-2 text-left">Qty</th>
+                            <th class="p-2 text-left">Unit Price</th>
+                            <th class="p-2 text-left">DISCOUNT</th>
+                            <th class="p-2 text-left">dis%</th>
+                            <th class="p-2 text-left">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for ($i = 0; $i < 4; $i++)
+                            <tr class="border-x border-black">
+                                <td class="p-2 text-sm border-x border-black">{{ $i + 1 }}</td>
+                                <td class="p-2 text-sm border-x border-black">Item Description Description Description Description Description</td>
+                                <td class="p-2 text-sm border-x border-black">Pcs</td>
+                                <td class="p-2 text-sm border-x border-black">1</td>
+                                <td class="p-2 text-sm border-x border-black">100.00</td>
+                                <td class="p-2 text-sm border-x border-black">0.00</td>
+                                <td class="p-2 text-sm border-x border-black">0.00</td>
+                                <td class="p-2 text-sm border-x border-black">100.00</td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="summary-container w-full">
+                <div class="rows flex flex-col">
+                    <div class="row flex">
+                        <div class="cell flex-1 text-right border border-black px-2">
+                            Subtotal
+                        </div>
+                        <div class="cell min-w-1/5 text-right border border-black px-2">
+                            2100.00
+                        </div>
+                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
+                            2100.00
+                        </div>
+                    </div>
+                    <div class="row flex">
+                        <div class="cell flex-1 text-right border border-black px-2">
+                            VAT
+                        </div>
+                        <div class="cell min-w-1/5 text-right border border-black px-2">
+                            100.00
+                        </div>
+                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
+                            100.00
+                        </div>
+                    </div>
+                    <div class="row flex">
+                        <div class="cell flex-1 text-right border border-black px-2">
+                            Total
+                        </div>
+                        <div class="cell min-w-1/5 text-right border border-black px-2">
+                            2200.00
+                        </div>
+                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
+                            2200.00
+                        </div>
+                    </div>
+                    <div class="row border-black text-center">
+                        <div class="cell flex-1 border border-black px-2">
+                            <h2 class="text-md capitalize">
+                                Two Thousand Two Hundred Only
+                            </h2>
+                        </div>
+                        <div class="cell flex-1 border border-black px-2">
+                            <h2 class="text-md capitalize" dir="rtl">
+                                ألفين ومئتين فقط
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="pdf-footer flex flex-col items-center  border-t border-indigo-400 border-t-2 pt-2">
+            <div class="flex w-full justify-between">
+                <div class="flex flex-col justify-between">
+                    <h2 class="text-xl capitalize">
+                        Vat Reg. No. 312661809300003
+                    </h2>
+                    <h2 class="text-xl capitalize">
+                        al jubail - al badiyah st. makkah dist
+                    </h2>
+                </div>
+                <div class="flex flex-col justify-between" dir="rtl">
+
+                    <h2 class="text-xl capitalize">
+                        رقم تسجيل ضريبة: 312661809300003
+                    </h2>
+                    <h2 class="text-xl capitalize">
+                        الجبيل - شارع البادية - حي مكة
+                    </h2>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="" class="text-blue-500 font-semibold underline">
+                    Email: sales@nifal.com
+                </a>
+                -
+                <a href="" class="text-blue-500 font-semibold underline">
+                    web: www.nifal.com
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
