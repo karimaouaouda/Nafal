@@ -6,7 +6,7 @@ use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return to_route('filament.admin.pages.dashboard');
 })->name('home');
 
 Route::view('dashboard', 'dashboard')
