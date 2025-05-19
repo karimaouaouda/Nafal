@@ -91,7 +91,7 @@ class TransactionResource extends Resource
             'index' => Pages\ListTransactions::route('/'),
             'create' => Pages\CreateTransaction::route('/create'),
             'edit' => Pages\EditTransaction::route('/{record}/edit'),
-            'view' => Pages\ViewTransaction::route('/{record}'),
+            'view' => Pages\TransactionDetails::route('/{record}'),
         ];
     }
 }

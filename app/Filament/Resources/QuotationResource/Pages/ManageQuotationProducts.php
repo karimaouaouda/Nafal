@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\QuotationResource\Pages;
 
 use App\Filament\Resources\QuotationResource;
+use App\Models\Product;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -41,6 +42,18 @@ class ManageQuotationProducts extends ManageRelatedRecords
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextInputColumn::make('discount')
+                    ->updateStateUsing(function(Product $record, $state){
+                        $record->pivot->discount = $state;
+                        $record->pivot->save();
+                    })
+                    ->default('0'),
+                Tables\Columns\TextInputColumn::make('sold')
+                    ->updateStateUsing(function(Product $record, $state){
+                        $record->pivot->sold = $state;
+                        $record->pivot->save();
+                    })
+                    ->default('0')
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()

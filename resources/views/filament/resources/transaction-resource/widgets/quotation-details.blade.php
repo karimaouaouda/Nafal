@@ -31,20 +31,7 @@
                     <p class="text-sm text-gray-700">Customer Name: {{ $record->customer->latin_name }} / {{ $record->customer->arabic_name }}</p>
                     <p class="text-sm text-gray-700">Total Amount: 240</p>
                 </div>
-                <div class="flex flex-col space-y-2">
-                    <h3 class="text-md font-semibold text-gray-800">Items:</h3>
-                    <ul class="list-disc list-inside">
-                        @for ($i = 0; $i < 5; $i++)
-                            @php
-                                $item=new stdClass();
-                                $item->name = 'Item ' . ($i + 1);
-                                $item->quantity = rand(1, 5);
-                                $item->price = rand(10, 100);
-                            @endphp
-                            <li class="text-sm text-gray-700">{{ $item->name }} - {{ $item->quantity }} x {{ $item->price }}</li>
-                        @endfor
-                    </ul>
-                </div>
+
             </div>
         @else
             <p class="w-full text-center py-2 text-danger-600 font-semibold">

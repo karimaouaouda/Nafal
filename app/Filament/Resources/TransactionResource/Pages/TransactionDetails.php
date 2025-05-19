@@ -2,20 +2,17 @@
 
 namespace App\Filament\Resources\TransactionResource\Pages;
 
-use App\Filament\Resources\QuotationResource\Pages\CreateQuotation;
 use App\Filament\Resources\TransactionResource;
 use App\Models\Product;
-use Filament\Actions;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
+use App\Models\Transaction;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
+use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Pages\ViewRecord;
-use Filament\Support\Colors\Color;
+use Filament\Resources\Pages\Page;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
@@ -23,16 +20,29 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ViewTransaction extends ViewRecord implements HasTable, HasForms
+
+class TransactionDetails extends Page implements HasForms, HasTable, HasInfolists
 {
     use InteractsWithTable, InteractsWithForms, InteractsWithInfolists;
 
     protected static string $resource = TransactionResource::class;
 
+    public Transaction $record;
+
+    protected static string $view = 'filament.resources.transaction-resource.pages.transaction-details';
+
+    protected function getTableQuery(): Builder|Relation|null
+    {
+        return $this->record->quotation->products();
+    }
+
     public function infolist(Infolist $infolist): Infolist
     {
-        return  $infolist->schema([
+        return  $infolist
+            ->record($this->record)
+            ->schema([
             Section::make('customer information')
                 ->schema([
                     TextEntry::make('id')
@@ -49,10 +59,14 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
     public function table(Table $table): Table
     {
         return $table
-            ->query($this->getTableQuery())
+            ->description('detail transaction')
+            ->heading('quotation products')
+            ->relationship(fn (): BelongsToMany => $this->record->quotation->products())
+            ->inverseRelationship('quotations')
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
                 Tables\Columns\TextInputColumn::make('discount')
                     ->updateStateUsing(function(Product $record, $state){
                         $record->pivot->discount = $state;
@@ -77,7 +91,6 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
-                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
@@ -94,57 +107,4 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
             ]));
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            TransactionResource\Widgets\TransactionProceed::class,
-            TransactionResource\Widgets\QuotationDetails::make([
-                'page' => $this
-            ])
-        ];
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            $this->quotationAction()
-        ];
-    }
-
-    protected function getTableQuery(): Builder|Relation|null
-    {
-        return $this->record->quotation->products()->getQuery();
-    }
-
-    public function getFormStatePath(): ?string
-    {
-        return 'data';
-    }
-
-
-    private function quotationAction(): Actions\Action
-    {
-        $quotation = $this->record->quotation;
-        return is_null($quotation) ?
-            Actions\Action::make('new quotation')
-                ->icon('heroicon-o-plus')
-                ->openUrlInNewTab()
-                ->url(
-                    CreateQuotation::getUrl([
-                        'transaction' => $this->record->getAttribute('id')
-                    ])
-                ) :
-            Actions\Action::make('view quotation')
-                ->color(Color::Gray)
-                ->form([
-                    TextInput::make('cus_ref')
-                        ->default($quotation->getAttribute('cus_ref'))
-                        ->readOnly(),
-                    Textarea::make('attention')
-                        ->default($quotation->getAttribute('attention'))
-                        ->readOnly()
-                ])
-                ->modalSubmitAction(false)
-                ->icon('heroicon-o-eye');
-    }
 }
