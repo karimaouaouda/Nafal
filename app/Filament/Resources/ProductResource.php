@@ -28,6 +28,7 @@ class ProductResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'name')
+                                    ->preload()
                                     ->prefixIcon('heroicon-o-tag')
                                     ->required()
                                     ->searchable(),

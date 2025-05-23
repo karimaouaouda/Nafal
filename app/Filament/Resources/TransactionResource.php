@@ -54,6 +54,7 @@ class TransactionResource extends Resource
                         'class' => 'font-bold',
                     ], true),
                 Tables\Columns\TextColumn::make('customer.latin_name')
+                    ->label('supplier')
                     ->description(fn (Transaction $record) => $record->customer->arabic_name),
                 Tables\Columns\TextColumn::make('created_at')
                     ->badge()
