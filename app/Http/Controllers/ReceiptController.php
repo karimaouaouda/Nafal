@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Receipt;
 use App\Http\Requests\StoreReceiptRequest;
 use App\Http\Requests\UpdateReceiptRequest;
+use App\Models\Receipt;
 
 class ReceiptController extends Controller
 {

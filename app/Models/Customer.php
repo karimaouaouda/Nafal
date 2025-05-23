@@ -19,7 +19,7 @@ class Customer extends Model
         'customer_number',
     ];
 
-    public function transactions() : HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

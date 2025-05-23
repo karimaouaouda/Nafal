@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'name',
-        'description'
+        'description',
     ];
 
-    public function products(): HasMany{
+    public function products(): HasMany
+    {
         return $this->hasMany(Product::class);
     }
 }

@@ -22,18 +22,16 @@ class Product extends Model
         'sheet',
         'category',
         'remark',
-        'image'
+        'image',
     ];
-
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-    public function quotations(): BelongsToMany
+
+    public function transactions(): BelongsToMany
     {
-        return $this->belongsToMany(Quotation::class, 'quotation_products');
+        return $this->belongsToMany(Transaction::class, 'transaction_products');
     }
-
-
 }

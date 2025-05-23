@@ -16,33 +16,33 @@ use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Colors\Color;
+use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables;
 
-class ViewTransaction extends ViewRecord implements HasTable, HasForms
+class ViewTransaction extends ViewRecord implements HasForms, HasTable
 {
-    use InteractsWithTable, InteractsWithForms, InteractsWithInfolists;
+    use InteractsWithForms, InteractsWithInfolists, InteractsWithTable;
 
     protected static string $resource = TransactionResource::class;
 
     public function infolist(Infolist $infolist): Infolist
     {
-        return  $infolist->schema([
+        return $infolist->schema([
             Section::make('customer information')
                 ->schema([
                     TextEntry::make('id')
                         ->prefix('#')
                         ->extraAttributes([
-                            'class' => 'font-bold'
+                            'class' => 'font-bold',
                         ], true),
                     TextEntry::make('customer.latin_name')
-                        ->badge()
-                ])->columns(2)
+                        ->badge(),
+                ])->columns(2),
         ]);
     }
 
@@ -54,20 +54,20 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextInputColumn::make('discount')
-                    ->updateStateUsing(function(Product $record, $state){
+                    ->updateStateUsing(function (Product $record, $state) {
                         $record->pivot->discount = $state;
                         $record->pivot->save();
                     })
                     ->default('0'),
                 Tables\Columns\TextInputColumn::make('sold')
-                    ->updateStateUsing(function(Product $record, $state){
+                    ->updateStateUsing(function (Product $record, $state) {
                         $record->pivot->sold = $state;
                         $record->pivot->save();
                     })
-                    ->default('0')
+                    ->default('0'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
@@ -99,15 +99,15 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
         return [
             TransactionResource\Widgets\TransactionProceed::class,
             TransactionResource\Widgets\QuotationDetails::make([
-                'page' => $this
-            ])
+                'page' => $this,
+            ]),
         ];
     }
 
     protected function getHeaderActions(): array
     {
         return [
-            $this->quotationAction()
+            $this->quotationAction(),
         ];
     }
 
@@ -121,17 +121,17 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
         return 'data';
     }
 
-
     private function quotationAction(): Actions\Action
     {
         $quotation = $this->record->quotation;
+
         return is_null($quotation) ?
             Actions\Action::make('new quotation')
                 ->icon('heroicon-o-plus')
                 ->openUrlInNewTab()
                 ->url(
                     CreateQuotation::getUrl([
-                        'transaction' => $this->record->getAttribute('id')
+                        'transaction' => $this->record->getAttribute('id'),
                     ])
                 ) :
             Actions\Action::make('view quotation')
@@ -142,7 +142,7 @@ class ViewTransaction extends ViewRecord implements HasTable, HasForms
                         ->readOnly(),
                     Textarea::make('attention')
                         ->default($quotation->getAttribute('attention'))
-                        ->readOnly()
+                        ->readOnly(),
                 ])
                 ->modalSubmitAction(false)
                 ->icon('heroicon-o-eye');

@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <div class="pdf-content p-4 border border-black w-[210mm]">
-        <div class="pdf-head flex justify-between border-b border-indigo-400 border-b-2 pb-2">
+    <div class="pdf-content h-full p-4 border border-black w-[210mm] flex flex-col justify-between">
+        <div class="pdf-head flex justify-between border-indigo-400 border-b-2 pb-2">
             <div class="flex flex-col justify-between">
                 <h1 class="text-2xl capitalize font-bold text-sky-800">
                     nifal al haditha trading est.
@@ -41,34 +41,34 @@
             </div>
         </div>
 
-        <div class="pdf-body py-4 flex flex-col space-y-2 items-center">
+        <div class="pdf-body flex-1 py-4 flex flex-col space-y-2 items-center">
             <h1 class="text-xl uppercase">
                 Quotation
             </h1>
             <div class="w-full flex justify-between border border-black">
                 <div class="flex flex-col border-r border-black p-2 pr-8">
                     <h2 class="text-lg capitalize">
-                        Quotation : SQ-NF-2025-24
+                        Quotation : {{ $quotation->code }}
                     </h2>
                     <h2 class="text-lg capitalize">
-                        Date: 27/03/2025
+                        Date: {{ now()->format('d/m/Y') }}
                     </h2>
                     <h2 class="text-lg capitalize">
-                        Attention :
+                        Attention : {{ $quotation->attention }}
                     </h2>
                     <h2 class="text-lg capitalize">
-                        CUS REF
+                        CUS REF: {{ $quotation->cus_ref }}
                     </h2>
                 </div>
                 <div class="flex flex-col flex-1 p-2">
                     <h2 class="text-xl capitalize">
-                        Customer Name: شركة نفال الحديثة
+                        Customer Name: {{ $quotation->transaction->customer->latin_name }}
                     </h2>
                     <h2 class="text-xl capitalize" dir="rtl">
-                        إسم الزبون: شركة نفال الحديثة
+                        إسم الزبون: {{ $quotation->transaction->customer->arabic_name }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        VatNo. 312661809300003
+                        VatNo. {{ $quotation->transaction->customer->vat_number }}
                     </h2>
                     <h2 class="text-xl capitalize">
                         address: al jubail - al badiyah st. makkah dist
@@ -90,23 +90,28 @@
                             <th class="p-2 text-left">Qty</th>
                             <th class="p-2 text-left">Unit Price</th>
                             <th class="p-2 text-left">DISCOUNT</th>
-                            <th class="p-2 text-left">dis%</th>
+                            <th class="p-2 text-left">sold</th>
                             <th class="p-2 text-left">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 0; $i < 4; $i++)
+                    @php $i = 0; $sum = 0 @endphp
+                        @foreach($quotation->transaction->products as $product)
+                            @php
+                                $subtotal = ((($product->pivot->price - ($product->pivot->price * $product->pivot->sold / 100)) * $product->pivot->quantity) - $product->pivot->discount);
+                            @endphp
                             <tr class="border-x border-black">
                                 <td class="p-2 text-sm border-x border-black">{{ $i + 1 }}</td>
-                                <td class="p-2 text-sm border-x border-black">Item Description Description Description Description Description</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $product->title . "-" . $product->description }}</td>
                                 <td class="p-2 text-sm border-x border-black">Pcs</td>
-                                <td class="p-2 text-sm border-x border-black">1</td>
-                                <td class="p-2 text-sm border-x border-black">100.00</td>
-                                <td class="p-2 text-sm border-x border-black">0.00</td>
-                                <td class="p-2 text-sm border-x border-black">0.00</td>
-                                <td class="p-2 text-sm border-x border-black">100.00</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $product->pivot->quantity }}</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $product->pivot->price }}</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $product->pivot->discount }}</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $product->pivot->sold }}%</td>
+                                <td class="p-2 text-sm border-x border-black">{{ $subtotal }}</td>
                             </tr>
-                        @endfor
+                            @php $i = $i + 1; $sum += $subtotal @endphp
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -117,11 +122,9 @@
                             Subtotal
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            2100.00
+                            {{ $sum }}
                         </div>
-                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
-                            2100.00
-                        </div>
+
                     </div>
                     <div class="row flex">
                         <div class="cell flex-1 text-right border border-black px-2">
@@ -130,20 +133,15 @@
                         <div class="cell min-w-1/5 text-right border border-black px-2">
                             100.00
                         </div>
-                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
-                            100.00
-                        </div>
                     </div>
                     <div class="row flex">
                         <div class="cell flex-1 text-right border border-black px-2">
                             Total
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            2200.00
+                            {{ $sum + 100.00 }}
                         </div>
-                        <div class="number in arabic min-w-1/5 text-right border border-black px-2">
-                            2200.00
-                        </div>
+
                     </div>
                     <div class="row border-black text-center">
                         <div class="cell flex-1 border border-black px-2">
@@ -162,32 +160,32 @@
         </div>
 
 
-        <div class="pdf-footer flex flex-col items-center  border-t border-indigo-400 border-t-2 pt-2">
+        <div class="pdf-footer flex flex-col items-center border-indigo-400 border-t-2 pt-2">
             <div class="flex w-full justify-between">
                 <div class="flex flex-col justify-between">
                     <h2 class="text-xl capitalize">
-                        Vat Reg. No. 312661809300003
+                        Vat Reg. No. {{ \App\Services\Configuration::get('vat_number')['en'] }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        al jubail - al badiyah st. makkah dist
+                        {{ \App\Services\Configuration::get('address')['en'] }}
                     </h2>
                 </div>
                 <div class="flex flex-col justify-between" dir="rtl">
 
                     <h2 class="text-xl capitalize">
-                        رقم تسجيل ضريبة: 312661809300003
+                        رقم تسجيل ضريبة: {{ \App\Services\Configuration::get('vat_number')['ar'] }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        الجبيل - شارع البادية - حي مكة
+                        {{ \App\Services\Configuration::get('address')['ar'] }}
                     </h2>
                 </div>
             </div>
             <div class="text-center">
-                <a href="" class="text-blue-500 font-semibold underline">
+                <a href="mailto:sales@nifal.com" class="text-blue-500 font-semibold underline">
                     Email: sales@nifal.com
                 </a>
                 -
-                <a href="" class="text-blue-500 font-semibold underline">
+                <a href="https://www.nifal.com" target="_blank" class="text-blue-500 font-semibold underline">
                     web: www.nifal.com
                 </a>
             </div>

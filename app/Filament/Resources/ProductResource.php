@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,15 +10,12 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
-
 
     public static function form(Form $form): Form
     {
@@ -41,7 +37,7 @@ class ProductResource extends Resource
                                     ->prefixIcon('heroicon-o-pencil'),
                                 Forms\Components\Textarea::make('description')
                                     ->required()
-                                    ->placeholder('Product description')
+                                    ->placeholder('Product description'),
                             ]),
                         Forms\Components\Wizard\Step::make('necessery informations')
                             ->schema([
@@ -66,7 +62,7 @@ class ProductResource extends Resource
                                     ->prefixIconColor(Color::Blue),
                                 Forms\Components\Textarea::make('remark')
                                     ->nullable()
-                                    ->placeholder('Product remark (Optional)')
+                                    ->placeholder('Product remark (Optional)'),
                             ]),
                         Forms\Components\Wizard\Step::make('media')
                             ->schema([
@@ -74,9 +70,9 @@ class ProductResource extends Resource
                                     ->nullable()
                                     ->label('Product image (Optional)')
                                     ->disk('public')
-                                    ->directory('products/images')
-                            ])
-                    ])
+                                    ->directory('products/images'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -88,7 +84,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->prefix('#')
                     ->extraAttributes([
-                        'class' => 'font-bold'
+                        'class' => 'font-bold',
                     ], true),
                 Tables\Columns\TextColumn::make('number')
                     ->badge(),
@@ -98,10 +94,10 @@ class ProductResource extends Resource
                     ->default(asset('images/product-default.jpeg'))
                     ->disk('public'),
                 Tables\Columns\TextColumn::make('title')
-                    ->tooltip(fn($state) => $state)
+                    ->tooltip(fn ($state) => $state)
                     ->words(5)
                     ->label('title')
-                    ->description(fn(Product $record) => $record->getAttribute('description'))
+                    ->description(fn (Product $record) => $record->getAttribute('description'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('price')
@@ -114,13 +110,13 @@ class ProductResource extends Resource
                     ->color(Color::Orange),
                 Tables\Columns\TextColumn::make('remark')
                     ->words(5)
-                    ->tooltip(fn($state) => $state),
+                    ->tooltip(fn ($state) => $state),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
-                ->relationship('category', 'name')
-                ->searchable()
-                ->multiple(),
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->multiple(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

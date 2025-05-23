@@ -9,13 +9,16 @@ class Settings extends Model
 {
     use HasTranslations;
 
-    public array $translatable = ['value'];
+    // public array $translatable = ['value'];
+
     protected $fillable = [
         'key',
         'value',
     ];
 
+    protected $casts = [
+        'value' => 'array',
+    ];
+
     protected $guarded = ['id'];
-
-
 }

@@ -13,9 +13,10 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use SoftDeletes;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -63,7 +64,8 @@ class User extends Authenticatable implements FilamentUser
             ->implode('');
     }
 
-    public function isSuperAdmin() : bool {
+    public function isSuperAdmin(): bool
+    {
         return $this->getAttribute('role') === 'super_admin';
     }
 

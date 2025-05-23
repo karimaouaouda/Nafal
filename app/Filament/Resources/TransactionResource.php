@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
-use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,8 +10,6 @@ use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TransactionResource extends Resource
 {
@@ -26,15 +23,14 @@ class TransactionResource extends Resource
                 ->parentItem(static::getNavigationParentItem())
                 ->icon(static::getNavigationIcon())
                 ->activeIcon(static::getActiveNavigationIcon())
-                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.*') ||
-                    request()->routeIs(QuotationResource::getRouteBaseName() . '.*'))
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName().'.*') ||
+                    request()->routeIs(QuotationResource::getRouteBaseName().'.*'))
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->badgeTooltip(static::getNavigationBadgeTooltip())
                 ->sort(static::getNavigationSort())
                 ->url(static::getNavigationUrl()),
         ];
     }
-
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
@@ -44,7 +40,7 @@ class TransactionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'latin_name')
-                    ->required()
+                    ->required(),
             ]);
     }
 
@@ -53,12 +49,12 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->prefix("#")
+                    ->prefix('#')
                     ->extraAttributes([
-                        'class' => 'font-bold'
+                        'class' => 'font-bold',
                     ], true),
                 Tables\Columns\TextColumn::make('customer.latin_name')
-                    ->description(fn(Transaction $record) => $record->customer->arabic_name),
+                    ->description(fn (Transaction $record) => $record->customer->arabic_name),
                 Tables\Columns\TextColumn::make('created_at')
                     ->badge()
                     ->date(),
@@ -69,7 +65,7 @@ class TransactionResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

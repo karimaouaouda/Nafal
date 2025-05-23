@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoryResource extends Resource
 {
@@ -32,7 +29,7 @@ class CategoryResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->minLength(10)
                     ->label('category description')
-                    ->maxLength(255)
+                    ->maxLength(255),
             ])->columns(1);
     }
 
@@ -45,7 +42,7 @@ class CategoryResource extends Resource
                     ->label('id')
                     ->prefix('#')
                     ->extraAttributes([
-                        'class' => 'font-bold'
+                        'class' => 'font-bold',
                     ], true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
@@ -54,7 +51,7 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->label('category description')
                     ->words(10)
-                    ->tooltip(fn($state) => $state)
+                    ->tooltip(fn ($state) => $state)
                     ->searchable(),
             ])
             ->filters([

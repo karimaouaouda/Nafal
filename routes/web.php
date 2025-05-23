@@ -21,9 +21,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-Route::get('/test', function(){
+Route::get('pdf/{quotation}', function (\App\Models\Quotation $quotation) {
+    $pdf = \Spatie\LaravelPdf\Facades\Pdf::view('test', [
+        'quotation' => $quotation,
+        'image' => base64_encode(file_get_contents(public_path('logo.png'))),
+    ]);
+
+    return $pdf->format('a4')->toResponse(request());
+})->name('quotation.pdf');
+
+Route::get('/test', function () {
     return \Spatie\LaravelPdf\Facades\Pdf::view('test', ['image' => base64_encode(file_get_contents(public_path('logo.png')))])
-            ->format('a4')
-            ->toResponse(request());
+        ->format('a4')
+        ->toResponse(request());
 });
 require __DIR__.'/auth.php';

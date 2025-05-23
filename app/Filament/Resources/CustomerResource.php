@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,10 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\View;
 
 class CustomerResource extends Resource
 {
@@ -68,20 +63,20 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('latin_name')
                     ->label('Latin Name')
                     ->searchable()
-                    ->tooltip(fn($state) => $state)
+                    ->tooltip(fn ($state) => $state)
                     ->words(3),
                 Tables\Columns\TextColumn::make('arabic_name')
                     ->label('Arabic Name')
                     ->searchable()
-                    ->tooltip(fn($state) => $state)
+                    ->tooltip(fn ($state) => $state)
                     ->words(3)
                     ->extraAttributes([
-                        'dir' => 'rtl'
+                        'dir' => 'rtl',
                     ]),
                 Tables\Columns\TextColumn::make('vat_number')
                     ->label('VAT Number')
                     ->badge()
-                    ->color(Color::Blue)
+                    ->color(Color::Blue),
 
             ])
             ->filters([

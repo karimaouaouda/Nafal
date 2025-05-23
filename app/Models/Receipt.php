@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Receipt extends Model
 {
-    use SoftDeletes;
     /** @use HasFactory<\Database\Factories\ReceiptFactory> */
     use HasFactory;
+
+    use SoftDeletes;
 }
