@@ -30,7 +30,7 @@ Route::get('pdf/{quotation}', function (\App\Models\Quotation $quotation) {
     return $pdf->format('a4')->toResponse(request());
 })->name('quotation.pdf');
 
-Route::get('/test', function () {
+Route::get('/test/{type?}', function (string $type) {
     return \Spatie\LaravelPdf\Facades\Pdf::view('test', ['image' => base64_encode(file_get_contents(public_path('logo.png')))])
         ->format('a4')
         ->toResponse(request());

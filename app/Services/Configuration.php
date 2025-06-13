@@ -25,10 +25,10 @@ class Configuration
     public static function get(string $key)
     {
         if (static::$data && self::$data->where('key', $key)->first() !== null) {
-            return self::$data->where('key', $key)->first()->value;
+            return self::$data->where('key', $key)->first()?->value ?? null;
         }
 
-        return static::$model::query()->where('key', $key)->first()->value;
+        return static::$model::query()->where('key', $key)->first()?->value ??null;
     }
 
     public static function loadConfigurations(): void

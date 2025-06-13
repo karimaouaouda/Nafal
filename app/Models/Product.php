@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -13,17 +15,24 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'number',
         'category_id',
+        'unity_id',
+        'sku',
         'title',
         'description',
-        'price',
-        'quantity',
-        'sheet',
-        'category',
-        'remark',
         'image',
+        'sheets',
+        'remark',
     ];
+
+    protected $casts = [
+        'sheets' => 'array',
+    ];
+
+    public static function getSheetsDir(): string
+    {
+        return 'products/sheets';
+    }
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -33,5 +42,14 @@ class Product extends Model
     public function transactions(): BelongsToMany
     {
         return $this->belongsToMany(Transaction::class, 'transaction_products');
+    }
+
+    public function importTransactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ImportTransaction::class);
+    }
+    public function unity(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Unity::class);
     }
 }

@@ -16,7 +16,6 @@ class Quotation extends Model
     protected $fillable = [
         'transaction_id',
         'attention',
-        'total',
         'cus_ref',
     ];
 

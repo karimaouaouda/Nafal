@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')
                 ->constrained('categories');
+            $table->foreignId('supplier_id')
+                ->constrained('suppliers')
+                ->noActionOnDelete();
             $table->integer('number');
             $table->string('title');
             $table->string('description');
@@ -23,6 +26,8 @@ return new class extends Migration
                 ->nullable();
             $table->integer('quantity')
                 ->default(0);
+            $table->json('sheets')
+                ->nullable();
             $table->mediumText('remark')
                 ->nullable();
 

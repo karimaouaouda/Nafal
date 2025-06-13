@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')
                 ->cascadeOnDelete();
             $table->float('sold', 2)->default(0);
-            $table->float('price', 2); // price of the product ( in case of product changes )
+            $table->float('sell_price', 2); // price of the product ( in case of product changes )
 
             $table->integer('quantity', false, unsigned: true)->default(1);
             $table->float('discount', 2)->default(0);

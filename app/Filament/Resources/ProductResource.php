@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
+use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,6 +18,8 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
 
+    protected static ?string $navigationGroup = 'products';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -26,12 +29,15 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Wizard\Step::make('appearance')
                             ->schema([
+                                Forms\Components\Select::make('supplier_id')
+                                    ->required()
+                                    ->preload()
+                                    ->options(Supplier::all()->pluck('name' ,'id')),
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'name')
                                     ->preload()
                                     ->prefixIcon('heroicon-o-tag')
-                                    ->required()
-                                    ->searchable(),
+                                    ->required(),
                                 Forms\Components\TextInput::make('title')
                                     ->required()
                                     ->placeholder('Product title')
@@ -64,6 +70,11 @@ class ProductResource extends Resource
                                 Forms\Components\Textarea::make('remark')
                                     ->nullable()
                                     ->placeholder('Product remark (Optional)'),
+                                Forms\Components\FileUpload::make('sheets')
+                                    ->multiple()
+                                    ->label('Product sheets (Optional)')
+                                    ->disk('public')
+                                    ->directory(Product::getSheetsDir()),
                             ]),
                         Forms\Components\Wizard\Step::make('media')
                             ->schema([

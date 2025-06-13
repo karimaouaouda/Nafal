@@ -48,27 +48,27 @@
             <div class="w-full flex justify-between border border-black">
                 <div class="flex flex-col border-r border-black p-2 pr-8">
                     <h2 class="text-lg capitalize">
-                        Quotation : {{ $quotation->code }}
+                        Quotation : {{ $quotation?->code ?? "something" }}
                     </h2>
                     <h2 class="text-lg capitalize">
                         Date: {{ now()->format('d/m/Y') }}
                     </h2>
                     <h2 class="text-lg capitalize">
-                        Attention : {{ $quotation->attention }}
+                        Attention : {{ $quotation?->attention ?? "" }}
                     </h2>
                     <h2 class="text-lg capitalize">
-                        CUS REF: {{ $quotation->cus_ref }}
+                        CUS REF: {{ $quotation?->cus_ref ?? "" }}
                     </h2>
                 </div>
                 <div class="flex flex-col flex-1 p-2">
                     <h2 class="text-xl capitalize">
-                        Customer Name: {{ $quotation->transaction->customer->latin_name }}
+                        Customer Name: {{ $quotation?->transaction->customer->latin_name ?? "some name" }}
                     </h2>
                     <h2 class="text-xl capitalize" dir="rtl">
-                        إسم الزبون: {{ $quotation->transaction->customer->arabic_name }}
+                        إسم الزبون: {{ $quotation?->transaction->customer->arabic_name ?? "اسم هنا" }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        VatNo. {{ $quotation->transaction->customer->vat_number }}
+                        VatNo. {{ $quotation?->transaction->customer->vat_number ?? "300054789" }}
                     </h2>
                     <h2 class="text-xl capitalize">
                         address: al jubail - al badiyah st. makkah dist
@@ -96,7 +96,7 @@
                     </thead>
                     <tbody>
                     @php $i = 0; $sum = 0 @endphp
-                        @foreach($quotation->transaction->products as $product)
+                        @foreach($quotation?->transaction->products?? [] as $product)
                             @php
                                 $subtotal = ((($product->pivot->price - ($product->pivot->price * $product->pivot->sold / 100)) * $product->pivot->quantity) - $product->pivot->discount);
                             @endphp
@@ -122,7 +122,7 @@
                             Subtotal
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            {{ $sum }}
+                            {{ $sum ?? 1500 }}
                         </div>
 
                     </div>
@@ -164,19 +164,19 @@
             <div class="flex w-full justify-between">
                 <div class="flex flex-col justify-between">
                     <h2 class="text-xl capitalize">
-                        Vat Reg. No. {{ \App\Services\Configuration::get('vat_number')['en'] }}
+                        Vat Reg. No. {{ \App\Services\Configuration::get('vat_number')['en'] ?? "no value" }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        {{ \App\Services\Configuration::get('address')['en'] }}
+                        {{ \App\Services\Configuration::get('address')['en'] ?? "no value" }}
                     </h2>
                 </div>
                 <div class="flex flex-col justify-between" dir="rtl">
 
                     <h2 class="text-xl capitalize">
-                        رقم تسجيل ضريبة: {{ \App\Services\Configuration::get('vat_number')['ar'] }}
+                        رقم تسجيل ضريبة: {{ \App\Services\Configuration::get('vat_number')['ar'] ?? "no value" }}
                     </h2>
                     <h2 class="text-xl capitalize">
-                        {{ \App\Services\Configuration::get('address')['ar'] }}
+                        {{ \App\Services\Configuration::get('address')['ar'] ?? "no value" }}
                     </h2>
                 </div>
             </div>

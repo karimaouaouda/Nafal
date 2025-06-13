@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('latin_name');
             $table->string('arabic_name')->nullable();
             $table->string('vat_number');
+            $table->string('logo_path')
+                ->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
