@@ -6,6 +6,7 @@ use App\Filament\Pages\Override\Dashboard;
 use App\Filament\Pages\Settings;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TotalProfit;
+use App\Filament\Widgets\TransactionsAmount;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -44,6 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->widgets([
                 TotalProfit::class,
+                TransactionsAmount::class,
                 StatsOverview::class,
             ])
             ->middleware([
