@@ -4,7 +4,9 @@ namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Filament\Resources\TransactionResource;
 use App\Filament\Widgets\CustomerCard;
+use App\Models\Product;
 use App\Models\Transaction;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -77,7 +79,7 @@ class TransactionDetails extends Page implements HasForms, HasTable
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('price')
+                Tables\Columns\TextColumn::make('sell_price')
                     ->label('unit price')
                     ->color(Color::Green)
                     ->icon('heroicon-o-currency-dollar')
@@ -102,7 +104,6 @@ class TransactionDetails extends Page implements HasForms, HasTable
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
                     ->action(function (array $arguments, array $data, Form $form, Table $table, Tables\Actions\AttachAction $action): void {
@@ -123,7 +124,7 @@ class TransactionDetails extends Page implements HasForms, HasTable
 
                         $action->process(function () use ($data, $record, $relationship) {
                             if ($record instanceof Model) {
-                                $data['sell_price'] = $record->price;
+                                $data['sell_price'] = $record->buy_price + 10;
                             }
 
                             $relationship->attach(
@@ -150,7 +151,37 @@ class TransactionDetails extends Page implements HasForms, HasTable
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->form([
+                        TextInput::make('sold')
+                            ->suffix('%')
+                            ->numeric()
+                            ->default(0)
+                            ->step(0.25)
+                            ->minValue(0)
+                            ->maxValue(100),
+                        TextInput::make('discount')
+                            ->suffix('$')
+                            ->default(0)
+                            ->numeric()
+                            ->minValue(0),
+                        TextInput::make('sell_price')
+                            ->suffix('$')
+                            ->numeric()
+                            ->step(0.25)
+                            ->minValue(0),
+                        TextInput::make('quantity')
+                            ->suffix('%')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(0)
+                            ->hint(function (Product $record) {
+                                return sprintf("there is %d available in the stock", $record->quantity);
+                            })
+                            ->maxValue(function (Product $record) {
+                                return $record->quantity;
+                            }),
+                    ]),
                 Tables\Actions\DetachAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),

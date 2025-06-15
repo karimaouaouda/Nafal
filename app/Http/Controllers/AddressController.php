@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
+use App\Models\Geo\Address;
 
 class AddressController extends Controller
 {

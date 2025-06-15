@@ -9,7 +9,7 @@
         <x-slot name="icon">
             <x-heroicon-o-user/>
         </x-slot>
-        
+
         @vite('resources/css/app.css')
         <div class=" p-2">
             <div class="flex items-start space-x-4 mb-6">
@@ -38,8 +38,8 @@
                         @if($customer->address->street_line_2)
                             <p>{{ $customer->street_line_2 }}</p>
                         @endif
-                        <p>{{ $customer->address->city }}, {{ $customer->address->province }}</p>
-                        <p>{{ $customer->address->country }} - {{ $customer->address->zip_code }}</p>
+                        <p>{{ $customer->address->state->name }}, {{ $customer->address->city->name }}</p>
+                        <p>{{ $customer->address->country->name }} - {{ $customer->address->zip_code }}</p>
                     </div>
                 </div>
 

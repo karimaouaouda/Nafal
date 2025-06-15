@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')
-                ->constrained()
+            $table->foreignUuid('transaction_id')
+                ->constrained('transactions')
                 ->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();

@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::dropIfExists('transactions');
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')
+                ->primary();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->mediumText('attention')->nullable();
+            $table->string('cus_ref')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

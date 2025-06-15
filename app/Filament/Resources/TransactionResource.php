@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
@@ -45,6 +47,16 @@ class TransactionResource extends Resource
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'latin_name')
                     ->required(),
+                TextInput::make('cus_ref')
+                    ->maxWidth('xl')
+                    ->label('Cus Ref (Optional)')
+                    ->placeholder('CUS REF')
+                    ->nullable(),
+                Textarea::make('attention')
+                    ->maxWidth('xl')
+                    ->nullable('Attention (Optional)')
+                    ->placeholder('Attention')
+                    ->nullable(),
             ]);
     }
 

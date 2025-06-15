@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('addressable_type');
             $table->string('addressable_id');
-            $table->string('country');
-            $table->string('city');
-            $table->string('province');
+            $table->bigInteger('country_id');
+            $table->bigInteger('state_id');
+            $table->bigInteger('city_id');
             $table->string('postal_code');
             $table->string('street_line_1');
             $table->string('street_line_2')

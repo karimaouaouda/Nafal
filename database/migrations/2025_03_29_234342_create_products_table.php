@@ -15,22 +15,18 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')
                 ->constrained('categories');
-            $table->foreignId('supplier_id')
-                ->constrained('suppliers')
+            $table->foreignId('unity_id')
+                ->constrained('unities')
                 ->noActionOnDelete();
-            $table->integer('number');
+            $table->string('sku');
             $table->string('title');
             $table->string('description');
-            $table->float('price', 2);
             $table->string('image')
                 ->nullable();
-            $table->integer('quantity')
-                ->default(0);
             $table->json('sheets')
                 ->nullable();
             $table->mediumText('remark')
                 ->nullable();
-
             $table->softDeletes();
             $table->timestamps();
         });

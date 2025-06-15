@@ -19,6 +19,7 @@ class Product extends Model
         'unity_id',
         'sku',
         'title',
+        'quantity',
         'description',
         'image',
         'sheets',
@@ -41,7 +42,8 @@ class Product extends Model
 
     public function transactions(): BelongsToMany
     {
-        return $this->belongsToMany(Transaction::class, 'transaction_products');
+        return $this->belongsToMany(Transaction::class, 'transaction_products')
+            ->withPivot(['quantity', 'sell_price', 'discount', 'sold']);
     }
 
     public function importTransactions(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -51,5 +53,17 @@ class Product extends Model
     public function unity(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Unity::class);
+    }
+
+    public function getBuyPriceAttribute(): float
+    {
+        return $this->importTransactions()->sum('buy_price') / $this->importTransactions()->count();
+    }
+
+    public function getQuantityAttribute(): float
+    {
+        $imported_quantity = $this->importTransactions()->sum('quantity');
+        $exported_quantity = $this->transactions()->sum('quantity');
+        return $imported_quantity - $exported_quantity;
     }
 }

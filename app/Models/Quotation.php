@@ -14,7 +14,7 @@ class Quotation extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'transaction_id',
+        'transaction_uuid',
         'attention',
         'cus_ref',
     ];

@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\Override\Dashboard;
 use App\Filament\Pages\Settings;
 use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\TotalProfit;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -42,8 +43,7 @@ class AdminPanelProvider extends PanelProvider
                 Settings::class,
             ])
             ->widgets([
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
+                TotalProfit::class,
                 StatsOverview::class,
             ])
             ->middleware([

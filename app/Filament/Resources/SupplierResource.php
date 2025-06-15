@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Models\Customer;
+use App\Models\Geo\City;
+use App\Models\Geo\Country;
+use App\Models\Geo\State;
 use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -59,20 +62,33 @@ class SupplierResource extends Resource
                         ]),
                     Forms\Components\Wizard\Step::make('client address informations')
                         ->schema([
-                            Forms\Components\Select::make('address.country')
+                            Forms\Components\Select::make('address.country_id')
                                 ->label('Country')
-                                ->options([
-                                    'SA' => 'Saudi Arabia - السعودية',
-                                ])
-                                ->default('SA')
+                                ->options(Country::all()->pluck('full_name', 'id'))
+                                ->searchable()
+                                ->live()
                                 ->required(),
-                            Forms\Components\Select::make('address.province')
-                                ->label('Province')
-                                ->options([
-                                    'riyadh' => 'Riyadh - الرياض'
-                                ])
+                            Forms\Components\Select::make('address.state_id')
+                                ->label('State')
+                                ->live()
+                                ->options(function (Forms\Get $get){
+                                    $country = $get('address.country_id');
+                                    if(empty($country)){
+                                        return [];
+                                    }
+
+                                    return State::query()->where('country_id', $country)->get()->pluck('name', 'id');
+                                })
                                 ->required(),
-                            Forms\Components\TextInput::make('address.city')
+                            Forms\Components\Select::make('address.city_id')
+                                ->options(function (Forms\Get $get){
+                                    $state = $get('address.state_id');
+                                    if(empty($state)){
+                                        return [];
+                                    }
+
+                                    return City::query()->where('state_id', $state)->get()->pluck('name', 'id');
+                                })
                                 ->label('City')
                                 ->required(),
                             Forms\Components\TextInput::make('address.street_line_1')

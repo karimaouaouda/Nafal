@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
-            $table->mediumText('attention')->nullable();
-            $table->string('cus_ref')->nullable();
+            $table->foreignUuid('transaction_id')
+                ->constrained('transactions')
+                ->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

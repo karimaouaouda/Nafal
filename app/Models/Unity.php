@@ -10,10 +10,6 @@ class Unity extends Model
         'name',
         'code',
         'abbreviation',
-        'type'
     ];
 
-    protected $casts = [
-        'type' => ''
-    ];
 }
