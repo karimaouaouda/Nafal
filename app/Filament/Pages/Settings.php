@@ -18,7 +18,9 @@ class Settings extends Page
     protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
     protected static string $view = 'filament.pages.settings';
-    
+
+    protected static bool $shouldRegisterNavigation = false;
+
 
     public array $settings = [];
 

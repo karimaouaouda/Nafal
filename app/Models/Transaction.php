@@ -50,4 +50,18 @@ class Transaction extends Model
     {
         return $this->hasOne(Receipt::class);
     }
+
+    public function profit(){
+        $products = $this->products()->with('importTransactions')->get();
+        $profit = 0;
+
+        $products->each(function($product) use ($profit){
+            $buy_price_avg = $product->importTransactions->avg('buy_price');
+
+            $sell_price = $product->pivot->sell_price;
+            $profit += ($sell_price - $buy_price_avg) * $product->pivot->quantity;
+        });
+
+        return $profit;
+    }
 }

@@ -20,74 +20,6 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'products';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->columns(1)
-            ->schema([
-                Forms\Components\Wizard::make()
-                    ->schema([
-                        Forms\Components\Wizard\Step::make('appearance')
-                            ->schema([
-                                Forms\Components\Select::make('supplier_id')
-                                    ->required()
-                                    ->preload()
-                                    ->options(Supplier::all()->pluck('name' ,'id')),
-                                Forms\Components\Select::make('category_id')
-                                    ->relationship('category', 'name')
-                                    ->preload()
-                                    ->prefixIcon('heroicon-o-tag')
-                                    ->required(),
-                                Forms\Components\TextInput::make('title')
-                                    ->required()
-                                    ->placeholder('Product title')
-                                    ->prefixIcon('heroicon-o-pencil'),
-                                Forms\Components\Textarea::make('description')
-                                    ->required()
-                                    ->placeholder('Product description'),
-                            ]),
-                        Forms\Components\Wizard\Step::make('necessery informations')
-                            ->schema([
-                                Forms\Components\TextInput::make('number')
-                                    ->required()
-                                    ->hint('this number must be unique')
-                                    ->placeholder('Product number')
-                                    ->prefixIcon('heroicon-o-language'),
-                                Forms\Components\TextInput::make('price')
-                                    ->required()
-                                    ->numeric()
-                                    ->minValue(0.0)
-                                    ->placeholder('Product price')
-                                    ->prefixIcon('heroicon-o-currency-dollar')
-                                    ->prefixIconColor(Color::Green),
-                                Forms\Components\TextInput::make('quantity')
-                                    ->required()
-                                    ->integer()
-                                    ->minValue(0)
-                                    ->placeholder('Product quantity')
-                                    ->prefixIcon('heroicon-o-inbox-stack')
-                                    ->prefixIconColor(Color::Blue),
-                                Forms\Components\Textarea::make('remark')
-                                    ->nullable()
-                                    ->placeholder('Product remark (Optional)'),
-                                Forms\Components\FileUpload::make('sheets')
-                                    ->multiple()
-                                    ->label('Product sheets (Optional)')
-                                    ->disk('public')
-                                    ->directory(Product::getSheetsDir()),
-                            ]),
-                        Forms\Components\Wizard\Step::make('media')
-                            ->schema([
-                                Forms\Components\FileUpload::make('image')
-                                    ->nullable()
-                                    ->label('Product image (Optional)')
-                                    ->disk('public')
-                                    ->directory('products/images'),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -133,6 +65,7 @@ class ProductResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -154,6 +87,7 @@ class ProductResource extends Resource
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'view' => Pages\ViewProduct::route('/{record}'),
         ];
     }
 }

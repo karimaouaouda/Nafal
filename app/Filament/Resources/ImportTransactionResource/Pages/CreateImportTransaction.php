@@ -99,9 +99,9 @@ class CreateImportTransaction extends CreateRecord
                                 ->label('Description')
                                 ->required(),
 
-                            Forms\Components\TextInput::make('product.sheets')
-                                ->label('Sheets')
-                                ->numeric(),
+                            Forms\Components\FileUpload::make('product.sheets')
+                                ->multiple()
+                                ->label('Sheets'),
 
                             Forms\Components\Textarea::make('product.remark')
                                 ->label('Remark'),

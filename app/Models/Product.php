@@ -55,6 +55,11 @@ class Product extends Model
         return $this->belongsTo(Unity::class);
     }
 
+    public function getImageUrlAttribute(): string
+    {
+        return asset('storage/' . $this->getAttribute('image'));
+    }
+
     public function getBuyPriceAttribute(): float
     {
         return $this->importTransactions()->sum('buy_price') / $this->importTransactions()->count();
