@@ -8,6 +8,17 @@
         </x-slot>
         {{ $this->CompanyNameForm }}
     </x-filament::section>
+
+   
+    <x-filament::section icon="heroicon-o-building-office-2" collapsible collapsed>
+        <x-slot name="heading">
+            Company Bio
+        </x-slot>
+        <x-slot name="description">
+            this is company bio which will display in quotations, invoices and transactions
+        </x-slot>
+        {{ $this->CompanyBioForm }}
+    </x-filament::section>
     <x-filament::section icon="heroicon-o-map-pin" collapsible collapsed>
         <x-slot name="heading">
             Company Address
@@ -37,6 +48,30 @@
         </x-slot>
         {{ $this->CompanyCRForm }}
     </x-filament::section>
+
+    {{-- email form --}}
+    <x-filament::section icon="heroicon-o-envelope" collapsible collapsed>
+        <x-slot name="heading">
+            Company Email
+        </x-slot>
+        <x-slot name="description">
+            this is company email which will display in quotations, invoices and transactions
+        </x-slot>
+        {{ $this->CompanyEmailForm }}
+    </x-filament::section>
+
+    {{-- website form --}}
+    <x-filament::section icon="heroicon-o-globe-alt" collapsible collapsed>
+        <x-slot name="heading">
+            Company Website
+        </x-slot>
+        <x-slot name="description">
+            this is company website which will display in quotations, invoices and transactions
+        </x-slot>
+        {{ $this->CompanyWebsiteForm }}
+    </x-filament::section>
+
+
 
 
 </x-filament-panels::page>

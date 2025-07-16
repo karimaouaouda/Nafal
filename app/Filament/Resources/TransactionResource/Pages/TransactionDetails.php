@@ -6,6 +6,7 @@ use App\Filament\Resources\TransactionResource;
 use App\Filament\Widgets\CustomerCard;
 use App\Models\Product;
 use App\Models\Transaction;
+use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,6 +20,8 @@ use Filament\Resources\Pages\Page;
 use Filament\Support\Colors\Color;
 use Filament\Support\Services\RelationshipJoiner;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
@@ -99,6 +102,11 @@ class TransactionDetails extends Page implements HasForms, HasTable
                     ->icon('heroicon-o-receipt-percent')
                     ->badge()
                     ->default('0'),
+                Tables\Columns\TextColumn::make('profit')
+                    ->badge()
+                    ->icon('heroicon-o-currency-dollar')
+                    ->default(0)
+                    ->numeric()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -215,7 +223,16 @@ class TransactionDetails extends Page implements HasForms, HasTable
     protected function getFooterWidgets(): array
     {
         return [
-
+            TransactionResource\Widgets\TransactionDetailsFooterWidget::make([
+                'record' => $this->record,
+            ])
         ];
+    }
+
+    private function openQuotationPdfPage(){
+        return Action::make('see quotation')
+            ->action(function(){
+                dd('ffd');
+            });
     }
 }

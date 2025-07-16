@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->mediumText('attention')->nullable();
             $table->string('cus_ref')->nullable();
+            $table->enum('status', \App\Enums\TransactionStatus::values());
             $table->softDeletes();
             $table->timestamps();
         });

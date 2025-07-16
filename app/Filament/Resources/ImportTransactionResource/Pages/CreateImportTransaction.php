@@ -38,6 +38,7 @@ class CreateImportTransaction extends CreateRecord
                                 ->label('Product SKU')
                                 ->required()
                                 ->reactive()
+                                ->debounce()
                                 ->afterStateUpdated(function (callable $set, ?string $state) {
                                     $exists = \App\Models\Product::query()->where('sku', $state)->exists();
                                     $set('product_section_visible', !$exists);
@@ -82,7 +83,16 @@ class CreateImportTransaction extends CreateRecord
 
                             Forms\Components\Select::make('product.unity_id')
                                 ->preload()
-                                ->options(Unity::all()->pluck('abbreviation', 'id'))
+                                ->options(function(){
+                                    $all = Unity::all();
+
+                                    $options = [];
+                                    $all->each(function(Unity $item) use (&$options){
+                                        $options[$item->getAttribute('id')] = sprintf("%s (%s)", $item->name, $item->abbreviation);
+                                    });
+
+                                    return $options;
+                                })
                                 ->label('Unity ID')
                                 ->required(),
 

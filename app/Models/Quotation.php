@@ -14,9 +14,7 @@ class Quotation extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'transaction_uuid',
-        'attention',
-        'cus_ref',
+        'transaction_id',
     ];
 
     public function transaction(): BelongsTo

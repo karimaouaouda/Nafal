@@ -18,4 +18,6 @@ enum Settings: string
 
     case WEBSITE = 'website';
 
+    case COMPANY_BIO = 'company_bio';
+
 }

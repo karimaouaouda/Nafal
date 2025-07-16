@@ -41,4 +41,19 @@ class Address extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+
+    public function getFullAddressAttribute(): string
+    {
+        $addressParts = [
+            $this->street_line_1,
+            $this->street_line_2,
+            $this->city?->name,
+            $this->state?->name,
+            $this->country?->name,
+            $this->postal_code,
+        ];
+
+        return implode(', ', array_filter($addressParts));
+    }
 }

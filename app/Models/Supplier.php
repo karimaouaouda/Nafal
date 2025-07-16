@@ -31,6 +31,11 @@ class Supplier extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function importTransactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ImportTransaction::class);
+    }
+
     public static function getLogosBaseDirPath(): string
     {
         return 'suppliers/logos';

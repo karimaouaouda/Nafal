@@ -1,7 +1,8 @@
 <?php
+namespace {{ NAMESPACE }};
 
- use App\Services\Service;
+use App\Services\Service;
 
-class {{ class }} extends Service
+class {{ CLASS_NAME }}Service extends Service
 {
 }

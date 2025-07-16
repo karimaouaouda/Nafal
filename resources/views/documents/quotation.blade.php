@@ -10,17 +10,17 @@
 </head>
 
 <body>
-    <div class="pdf-content h-full p-4 border border-black w-[210mm] flex flex-col justify-between">
+    <div class="pdf-content h-screen p-4 border border-black w-[210mm] flex flex-col justify-between">
         <div class="pdf-head flex justify-between border-indigo-400 border-b-2 pb-2">
             <div class="flex flex-col justify-between">
-                <h1 class="text-2xl capitalize font-bold text-sky-800">
-                    nifal al haditha trading est.
+                <h1 class="text-lg capitalize font-bold text-sky-800">
+                    {{ $settings->where('key', 'company_name')->first()->value['en'] ?? "Nifal Modern Trading Est." }}
                 </h1>
-                <h2 class="text-xl capitalize">
-                    safety - electrical - mechanical
+                <h2 class="text-md capitalize">
+                    {{ $settings->where('key', 'company_bio')->first()->value['en'] ?? "Safety - Electrical - Mechanical" }}
                 </h2>
-                <h2 class="text-xl capitalize">
-                    c.r. 2055154968
+                <h2 class="text-md capitalize">
+                    c.r. {{ $settings->where('key', 'cr_number')->first()->value['en'] ?? "2055154968" }}
                 </h2>
             </div>
 
@@ -29,14 +29,14 @@
             </div>
 
             <div class="flex flex-col justify-between" dir="rtl">
-                <h1 class="text-2xl capitalize font-bold text-sky-800">
-                    مؤسسة نفال الحديثة التجارية
+                <h1 class="text-lg capitalize font-bold text-sky-800">
+                    {{ $settings->where('key', 'company_name')->first()->value['ar'] ?? "مؤسسة نفل الحديثة للتجارة" }}
                 </h1>
-                <h2 class="text-xl capitalize">
-                    السلامة - الكهربائية - الميكانيكية
+                <h2 class="text-md capitalize">
+                    {{ $settings->where('key', 'company_bio')->first()->value['ar'] ?? "السلامة - الكهرباء - الميكانيكا" }}
                 </h2>
-                <h2 class="text-xl capitalize">
-                    س.ت. 2055154968
+                <h2 class="text-md capitalize">
+                    س.ت. {{ $settings->where('key', 'cr_number')->first()->value['ar'] ?? "2055154968" }}
                 </h2>
             </div>
         </div>
@@ -84,14 +84,14 @@
                 <table class="table-auto w-full border border-black">
                     <thead>
                         <tr class="border-b border-black">
-                            <th class="p-2 text-left">Item</th>
-                            <th class="p-2 text-left">Description</th>
-                            <th class="p-2 text-left">Unity</th>
-                            <th class="p-2 text-left">Qty</th>
-                            <th class="p-2 text-left">Unit Price</th>
-                            <th class="p-2 text-left">DISCOUNT</th>
-                            <th class="p-2 text-left">sold</th>
-                            <th class="p-2 text-left">Total</th>
+                            <th class="p-2 text-left text-xs">Item</th>
+                            <th class="p-2 text-left text-xs">Description</th>
+                            <th class="p-2 text-left text-xs">Unity</th>
+                            <th class="p-2 text-left text-xs">Qty</th>
+                            <th class="p-2 text-left text-xs">Unit Price</th>
+                            <th class="p-2 text-left text-xs">DISCOUNT</th>
+                            <th class="p-2 text-left text-xs">sold</th>
+                            <th class="p-2 text-left text-xs">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -182,11 +182,11 @@
             </div>
             <div class="text-center">
                 <a href="mailto:sales@nifal.com" class="text-blue-500 font-semibold underline">
-                    Email: sales@nifal.com
+                    Email: {{ $settings->where('key', 'email')->first()->value['en'] ?? "" }}
                 </a>
                 -
                 <a href="https://www.nifal.com" target="_blank" class="text-blue-500 font-semibold underline">
-                    web: www.nifal.com
+                    web: {{ $settings->where('key', 'website')->first()->value['en'] ?? "www.nifal.com" }}
                 </a>
             </div>
         </div>

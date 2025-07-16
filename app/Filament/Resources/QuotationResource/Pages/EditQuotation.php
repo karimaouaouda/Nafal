@@ -25,8 +25,8 @@ class EditQuotation extends EditRecord
         return [
             Actions\DeleteAction::make(),
             Actions\Action::make('go back')
-                ->url(fn ($record) => TransactionResource\Pages\ViewTransaction::getUrl([
-                    'record' => $record->id,
+                ->url(fn ($record) => TransactionResource\Pages\TransactionDetails::getUrl([
+                    'record' => $record->transaction->id,
                 ])),
         ];
     }

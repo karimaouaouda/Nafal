@@ -9,11 +9,13 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "^3.3",
+        "kwn/number-to-words": "^2.12",
         "laravel/framework": "^12.0",
         "laravel/telescope": "^5.9",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.0",
         "pixelpeter/filament-language-tabs": "^2.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-pdf": "^1.5",
         "spatie/laravel-translatable": "^6.11",
         "tapp/filament-value-range-filter": "^1.0"

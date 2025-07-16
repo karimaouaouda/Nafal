@@ -47,7 +47,9 @@ class Settings extends Page
                             ->schema([
                                 TextInput::make('en')
                                     ->label('company name value')
-                                    ->default($this->settings[\App\Enums\Settings::COMPANY_NAME->value]['en'])
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::COMPANY_NAME->value]) ? $this->settings[\App\Enums\Settings::COMPANY_NAME->value]['en'] : ''
+                                        )
                                     ->required(),
                             ]),
                         Tabs\Tab::make('ar')
@@ -55,7 +57,9 @@ class Settings extends Page
                             ->schema([
                                 TextInput::make('ar')
                                     ->label('إسم الشركة بالعربية')
-                                    ->default($this->settings[\App\Enums\Settings::COMPANY_NAME->value]['ar'])
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::COMPANY_NAME->value]) ? $this->settings[\App\Enums\Settings::COMPANY_NAME->value]['ar'] : '' 
+                                        )
                                     ->required(),
                             ]),
                     ]),
@@ -65,6 +69,43 @@ class Settings extends Page
                 ]),
             ]);
     }
+
+    public function CompanyBioForm(Form $form): Form
+    {
+        return $form
+            ->operation('create')
+            ->statePath('settings.'.\App\Enums\Settings::COMPANY_BIO->value)
+            ->schema([
+                Tabs::make('Company Bio')
+                    ->schema([
+                        Tabs\Tab::make('en')
+                            ->label('EN')
+                            ->schema([
+                                TextInput::make('en')
+                                    ->label('company bio value')
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::COMPANY_BIO->value]) ? $this->settings[\App\Enums\Settings::COMPANY_BIO->value]['en'] : ''
+                                        )
+                                    ->required(),
+                            ]),
+                        Tabs\Tab::make('ar')
+                            ->label('AR')
+                            ->schema([
+                                TextInput::make('ar')
+                                    ->label('شعار الشركة بالعربية')
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::COMPANY_BIO->value]) ? $this->settings[\App\Enums\Settings::COMPANY_BIO->value]['ar'] : '' 
+                                        )
+                                    ->required(),
+                            ]),
+                    ]),
+                \Filament\Forms\Components\Actions::make([
+                    Action::make('save')
+                        ->action('save'),
+                ]),
+            ]);
+    }
+
 
     public function CompanyAddressForm(Form $form): Form
     {
@@ -79,7 +120,9 @@ class Settings extends Page
                             ->schema([
                                 TextInput::make('en')
                                     ->label('company adress value')
-                                    ->default($this->settings[\App\Enums\Settings::ADDRESS->value]['en'] ?? '')
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::ADDRESS->value]) ? $this->settings[\App\Enums\Settings::ADDRESS->value]['en'] : ''
+                                        )
                                     ->required(),
                             ]),
                         Tabs\Tab::make('ar')
@@ -87,7 +130,9 @@ class Settings extends Page
                             ->schema([
                                 TextInput::make('ar')
                                     ->label('عنوان الشركة بالعربية')
-                                    ->default($this->settings[\App\Enums\Settings::ADDRESS->value]['ar'] ?? '')
+                                    ->default(
+                                        isset($this->settings[\App\Enums\Settings::ADDRESS->value]) ? $this->settings[\App\Enums\Settings::ADDRESS->value]['ar'] : ''
+                                        )
                                     ->required(),
                             ]),
                     ]),
@@ -162,6 +207,70 @@ class Settings extends Page
             ]);
     }
 
+    public function CompanyWebsiteForm(Form $form): Form
+    {
+        return $form
+            ->operation('create')
+            ->statePath('settings.'.\App\Enums\Settings::WEBSITE->value)
+            ->schema([
+                Tabs::make('Company Website')
+                    ->schema([
+                        Tabs\Tab::make('en')
+                            ->label('EN')
+                            ->schema([
+                                TextInput::make('en')
+                                    ->label('company website')
+                                    ->default($this->settings[\App\Enums\Settings::WEBSITE->value]['en'] ?? '')
+                                    ->required(),
+                            ]),
+                        Tabs\Tab::make('ar')
+                            ->label('AR')
+                            ->schema([
+                                TextInput::make('ar')
+                                    ->label('موقع الشركة بالعربية')
+                                    ->default($this->settings[\App\Enums\Settings::WEBSITE->value]['ar'] ?? '')
+                                    ->required(),
+                            ]),
+                    ]),
+                \Filament\Forms\Components\Actions::make([
+                    Action::make('save')
+                        ->action('save'),
+                ]),
+            ]);
+    }
+
+    public function CompanyEmailForm(Form $form): Form
+    {
+        return $form
+            ->operation('create')
+            ->statePath('settings.'.\App\Enums\Settings::EMAIL->value)
+            ->schema([
+                Tabs::make('Company Email')
+                    ->schema([
+                        Tabs\Tab::make('en')
+                            ->label('EN')
+                            ->schema([
+                                TextInput::make('en')
+                                    ->label('company email')
+                                    ->default($this->settings[\App\Enums\Settings::EMAIL->value]['en'] ?? '')
+                                    ->required(),
+                            ]),
+                        Tabs\Tab::make('ar')
+                            ->label('AR')
+                            ->schema([
+                                TextInput::make('ar')
+                                    ->label('البريد الإلكتروني للشركة بالعربية')
+                                    ->default($this->settings[\App\Enums\Settings::EMAIL->value]['ar'] ?? '')
+                                    ->required(),
+                            ]),
+                    ]),
+                \Filament\Forms\Components\Actions::make([
+                    Action::make('save')
+                        ->action('save'),
+                ]),
+            ]);
+    }
+
     protected function getForms(): array
     {
         return [
@@ -169,6 +278,9 @@ class Settings extends Page
             'CompanyAddressForm',
             'CompanyVatForm',
             'CompanyCRForm',
+            'CompanyBioForm',
+            'CompanyWebsiteForm',
+            'CompanyEmailForm',
         ];
     }
 }

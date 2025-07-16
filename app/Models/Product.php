@@ -50,6 +50,7 @@ class Product extends Model
     {
         return $this->hasMany(ImportTransaction::class);
     }
+    
     public function unity(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Unity::class);
@@ -70,5 +71,18 @@ class Product extends Model
         $imported_quantity = $this->importTransactions()->sum('quantity');
         $exported_quantity = $this->transactions()->sum('quantity');
         return $imported_quantity - $exported_quantity;
+    }
+
+    public function getProfitAttribute(): float
+    {
+        if (!$this->pivot){
+            throw new \BadMethodCallException('you calling function in a product without loading the transaction');
+        }
+
+        $buy_price = $this->getBuyPriceAttribute();
+
+        $sell_price = $this->pivot->sell_price;
+        return ($sell_price - $buy_price) * $this->pivot->quantity;
+
     }
 }
