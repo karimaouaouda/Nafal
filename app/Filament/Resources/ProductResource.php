@@ -20,6 +20,12 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'products';
 
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
