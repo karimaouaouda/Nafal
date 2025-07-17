@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\TransactionStatus;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use Filament\Forms;
@@ -65,7 +66,10 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->prefix('#')
+                    ->badge()
+                    ->searchable()
+                    ->toggleable()
+                    ->formatStateUsing(fn(string $state) => sprintf("%s...%s", substr($state, 0, 3), substr($state, -3)) )
                     ->extraAttributes([
                         'class' => 'font-bold',
                     ], true),
@@ -75,6 +79,9 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->badge()
                     ->date(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->selectablePlaceholder(false)
+                    ->options(TransactionStatus::asAssocArray())
             ])
             ->filters([
                 //

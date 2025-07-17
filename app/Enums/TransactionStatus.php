@@ -21,4 +21,14 @@ enum TransactionStatus : string
 
         return $values;
     }
+
+    public static function asAssocArray(): array
+    {
+        $assocArray = [];
+        foreach (self::cases() as $case) {
+            $assocArray[$case->value] = $case->name;
+        }
+
+        return $assocArray;
+    }
 }
