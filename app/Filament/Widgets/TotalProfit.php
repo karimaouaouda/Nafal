@@ -7,11 +7,11 @@ use Filament\Widgets\ChartWidget;
 
 class TotalProfit extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Profit';
 
     protected static bool $isLazy = false;
 
-    protected static ?string $pollingInterval = "2s";
+    protected static ?string $pollingInterval = "20s";
 
     protected function getData(): array
     {

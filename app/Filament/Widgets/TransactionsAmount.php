@@ -6,7 +6,7 @@ use Filament\Widgets\ChartWidget;
 
 class TransactionsAmount extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Transactions';
 
     protected static bool $isLazy = false;
 

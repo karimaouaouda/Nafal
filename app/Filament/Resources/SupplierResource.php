@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -27,11 +28,11 @@ class SupplierResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Wizard::make([
-                    Forms\Components\Wizard\Step::make('client personal informations')
+                    Forms\Components\Wizard\Step::make('Supplier personal informations')
                         ->columns(2)
                         ->schema([
                             Forms\Components\TextInput::make('latin_name')
-                                ->placeholder('customer latin name')
+                                ->placeholder('Supplier latin name')
                                 ->maxWidth('xl')
                                 ->columnSpan(1)
                                 ->required()
@@ -39,14 +40,14 @@ class SupplierResource extends Resource
                                 ->autocapitalize()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('arabic_name')
-                                ->placeholder('customer arabic name')
+                                ->placeholder('Supplier arabic name')
                                 ->maxWidth('xl')
                                 ->prefixIcon('heroicon-o-user')
                                 ->columnSpan(1)
                                 ->nullable()
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make('customer_number')
-                                ->placeholder('Customer number')
+                            Forms\Components\TextInput::make('supplier_number')
+                                ->placeholder('Supplier number')
                                 ->prefixIcon('heroicon-o-identification')
                                 ->maxWidth('xl')
                                 ->columnSpan(1)
@@ -60,7 +61,7 @@ class SupplierResource extends Resource
                                 ->required()
                                 ->integer(),
                         ]),
-                    Forms\Components\Wizard\Step::make('client address informations')
+                    Forms\Components\Wizard\Step::make('Supplier address informations')
                         ->schema([
                             Forms\Components\Select::make('address.country_id')
                                 ->label('Country')
@@ -101,7 +102,7 @@ class SupplierResource extends Resource
                                 ->label('Postal Code')
                                 ->required(),
                         ]),
-                    Forms\Components\Wizard\Step::make('client contact informations')
+                    Forms\Components\Wizard\Step::make('Supplier contact informations')
                         ->schema([
                             Forms\Components\TextInput::make('contact.phone_number')
                                 ->label('Phone Number')
@@ -116,7 +117,7 @@ class SupplierResource extends Resource
                                 ->url()
                                 ->nullable(),
                         ]),
-                    Forms\Components\Wizard\Step::make('client appearance')
+                    Forms\Components\Wizard\Step::make('Supplier appearance')
                         ->schema([
                             Forms\Components\FileUpload::make('logo_path')
                                 ->disk('public')
@@ -132,7 +133,25 @@ class SupplierResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->prefix('#'),
+                Tables\Columns\TextColumn::make('latin_name')
+                    ->label('Latin Name')
+                    ->searchable()
+                    ->tooltip(fn ($state) => $state)
+                    ->words(3),
+                Tables\Columns\TextColumn::make('arabic_name')
+                    ->label('Arabic Name')
+                    ->searchable()
+                    ->tooltip(fn ($state) => $state)
+                    ->words(3)
+                    ->extraAttributes([
+                        'dir' => 'rtl',
+                    ]),
+                Tables\Columns\TextColumn::make('vat_number')
+                    ->label('VAT Number')
+                    ->badge()
+                    ->color(Color::Blue),
             ])
             ->filters([
                 //
