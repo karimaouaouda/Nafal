@@ -49,7 +49,7 @@ class ProductResource extends Resource
                     ->label('title')
                     ->description(fn (Product $record) => $record->getAttribute('description'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price')
+                Tables\Columns\TextColumn::make('buy_price')
                     ->label('price')
                     ->badge()
                     ->color(Color::Green)
