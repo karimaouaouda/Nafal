@@ -18,9 +18,13 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationGroup = 'products';
+    protected static ?string $navigationGroup = "transactions";
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+
+    protected static ?string $label = "Export Transaction";
+
+    protected static ?string $pluralLabel = "Export Transactions";
 
     public static function getNavigationItems(): array
     {

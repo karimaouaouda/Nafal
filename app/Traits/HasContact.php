@@ -22,4 +22,11 @@ trait HasContact
     {
         return $this->morphOne(\App\Models\Contact::class, 'contactable');
     }
+
+    public function delete(): ?bool
+    {
+        $this->contact()?->delete();
+        $this->address()?->delete();
+        return parent::delete();
+    }
 }

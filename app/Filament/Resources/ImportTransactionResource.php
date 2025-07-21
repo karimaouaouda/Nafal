@@ -20,6 +20,8 @@ class ImportTransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-arrow-down';
 
+    protected static ?string $navigationGroup = "transactions";
+
     public static function form(Form $form): Form
     {
         return $form
