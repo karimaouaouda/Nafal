@@ -46,13 +46,6 @@ class SupplierResource extends Resource
                                 ->columnSpan(1)
                                 ->nullable()
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make('supplier_number')
-                                ->placeholder('Supplier number')
-                                ->prefixIcon('heroicon-o-identification')
-                                ->maxWidth('xl')
-                                ->columnSpan(1)
-                                ->required()
-                                ->integer(),
                             Forms\Components\TextInput::make('vat_number')
                                 ->placeholder('tax number')
                                 ->prefixIcon('heroicon-o-identification')
