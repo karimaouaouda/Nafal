@@ -15,7 +15,6 @@ class Supplier extends Model
     use HasFactory, HasAddress, HasContact, HasLogo;
 
     protected $fillable = [
-        'supplier_number',
         'latin_name',
         'arabic_name',
         'logo_path',
