@@ -5,6 +5,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Models\Settings;
 use App\Services\InvoicePdfGenerator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -34,6 +35,14 @@ Route::get('receipt/pdf/{receipt}', function (\App\Models\Receipt $receipt) {
 })->name('receipt.pdf');
 
 Route::get('quotation/pdf/{quotation}', function (\App\Models\Quotation $quotation) {
+    $r = Pdf::loadView('documents.quotation', [
+        'quotation' => $quotation,
+        'image' => base64_encode(file_get_contents(public_path('logo.png'))),
+        'settings' => Settings::all()
+    ])->setPaper('a4');
+
+    return $r->stream();
+    
     $pdf = \Spatie\LaravelPdf\Facades\Pdf::view('documents.quotation', [
         'quotation' => $quotation,
         'image' => base64_encode(file_get_contents(public_path('logo.png'))),
