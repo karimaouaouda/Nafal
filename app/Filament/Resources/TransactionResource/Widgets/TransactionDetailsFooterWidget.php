@@ -19,25 +19,18 @@ class TransactionDetailsFooterWidget extends Widget
     protected int | string | array $columnSpan = 'full';
 
 
-
-    public function openQuotationAsPdf(): \Illuminate\Http\RedirectResponse
+    public function getGenerateQuotationUrl(): string
     {
-        return redirect()->to(route('quotation.pdf', [
-            'quotation' => $this->record->quotation,
-        ]));
+        return route('quotation.pdf', ['quotation' => $this->record->quotation]);
     }
 
-    public function openInvoiceAsPdf(): \Illuminate\Http\RedirectResponse
+    public function getGenerateInvoiceUrl(): string
     {
-        return redirect()->to(route('invoice.pdf', [
-            'invoice' => $this->record->invoice,
-        ]));
+        return route('invoice.pdf', ['invoice' => $this->record->invoice]);
     }
 
-    public function openReceiptAsPdf(): \Illuminate\Http\RedirectResponse
+    public function getGenerateReceiptUrl(): string
     {
-        return redirect()->to(route('receipt.pdf', [
-            'receipt' => $this->record->receipt,
-        ]));
+        return route('receipt.pdf', ['receipt' => $this->record->receipt]);
     }
 }

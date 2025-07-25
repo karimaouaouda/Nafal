@@ -1,28 +1,28 @@
 <x-filament-widgets::widget>
     <div class="w-full flex justify-end items-center gap-2">
-        <x-filament::button 
+        <x-filament::button
             tag="a"
             :openInNewTab="true"
             target="_blank"
-            href="{{ route('quotation.pdf', ['quotation' => $record->quotation]) }}"
+            href="{{ $this->getGenerateQuotationUrl() }}"
             color="primary">
-            see receipt
+            generate quotation
         </x-filament::button>
-        <x-filament::button 
+        <x-filament::button
             tag="a"
             :openInNewTab="true"
             target="_blank"
-            href="{{ route('quotation.pdf', ['quotation' => $record->quotation]) }}"
-            color="primary">
-            see receipt
+            href="{{ $this->getGenerateInvoiceUrl() }}"
+            color="success">
+            generate invoice
         </x-filament::button>
-        <x-filament::button 
+        <x-filament::button
             tag="a"
             :openInNewTab="true"
             target="_blank"
-            href="{{ route('quotation.pdf', ['quotation' => $record->quotation]) }}"
-            color="primary">
-            see receipt
+            href="{{ $this->getGenerateReceiptUrl() }}"
+            color="danger">
+            generate receipt
         </x-filament::button>
     </div>
 </x-filament-widgets::widget>
