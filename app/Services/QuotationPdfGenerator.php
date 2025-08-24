@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\Quotation;
 use App\Models\Settings;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\LaravelPdf\PdfBuilder;
 
-class InvoicePdfGenerator extends PdfService
+class QuotationPdfGenerator extends PdfService
 {
-    public string $view = 'documents.invoice';
+    public string $view = 'documents.quotation';
 
-    public Invoice $invoice;
+    public Quotation $quotation;
 
     public function __construct()
     {
@@ -22,11 +22,11 @@ class InvoicePdfGenerator extends PdfService
 
     public function getData(): array
     {
-        $settings = Settings::all();
+         $settings = Settings::all();
 
-        $invoice = $this->invoice;
+        $quotation = $this->quotation ?? $this->getQuotation();
 
-        $total = $invoice->transaction->products->sum(function (Product $product) {
+        $total = $quotation->transaction->products->sum(function (Product $product) {
             $price = $product->pivot->sell_price * $product->pivot->quantity;
 
             $price = $price - $product->pivot->discount;
@@ -34,54 +34,64 @@ class InvoicePdfGenerator extends PdfService
             return $price;
         });
 
-        $vat = $total * (($settings->where('key', 'vat_percent')->first()?->value['vat_percent'] ?? 15)  / 100);
+        $vat = $total * ( $this->getVatPercent()  / 100);
 
         $qr_code_data = sprintf(
             "%s--%s--%s--%s--%s--%s",
             $settings->where('key','company_name')->first()->value['en'],
-            $invoice->transaction->customer->vat_number,
+            $quotation->transaction->customer->vat_number,
             now(),
             $total,
             $vat,
-            $invoice->transaction->customer->latin_name
+            $quotation->transaction->customer->latin_name
         );
 
         
 
         return [
-            'invoice' => $this->getInvoice(),
+            'quotation' => $this->getQuotation(),
             'image' => base64_encode(file_get_contents(public_path('logo.png'))),
             'settings' => $settings,
             'vat' => $vat,
+            'vat_percent' => $this->getVatPercent(),
             'total' => $total,
             'qr_code' => QrCode::size(100)->generate(base64_encode($qr_code_data)),
         ];
     }
 
-    private function getInvoice()
+    private function getVatPercent(): float
     {
-        // Logic to retrieve the invoice data
-        return request('invoice')
-            ->load(['transaction', 'transaction.products']);
+        return Settings::where('key', 'vat_percent')->first()?->value['vat_percent'] ?? 0;
+    }
+
+    private function getSettings(){
+        return Settings::all();
     }
 
 
-    public static function pdfResponse(?Invoice $invoice): string
+    private function getQuotation()
+    {
+        // Logic to retrieve the quotation data
+        return request('quotation')
+            ->load(['transaction', 'transaction.products']);
+    }
+
+    public static function pdfResponse(?Quotation $quotation): string
     {
         $instance = new self();
 
-        $instance->invoice = $invoice ?? $instance->getInvoice();
+        $instance->quotation = $quotation ?? $instance->getQuotation();
 
         $data = $instance->getData();
 
         return $instance->generatePdf($data);
     }
 
-    public static function generate(?Invoice $invoice): PdfBuilder
+    public static function generate(?Quotation $quotation): PdfBuilder
     {
         $instance = new self();
 
-        $instance->invoice = $invoice ?? $instance->getInvoice();
+        $instance->quotation = $quotation ?? $instance->getQuotation();
 
         $data = $instance->getData();
 

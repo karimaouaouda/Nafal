@@ -184,10 +184,10 @@ class TransactionDetails extends Page implements HasForms, HasTable
                             ->integer()
                             ->minValue(0)
                             ->hint(function (Product $record) {
-                                return sprintf("there is %d available in the stock", $record->quantity);
+                                return sprintf("there is %d available in the stock", ($record->quantity + $record->pivot->quantity));
                             })
                             ->maxValue(function (Product $record) {
-                                return $record->quantity;
+                                return ($record->quantity + $record->pivot->quantity);
                             }),
                     ]),
                 Tables\Actions\DetachAction::make(),

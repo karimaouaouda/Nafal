@@ -35,13 +35,11 @@ Route::get('receipt/pdf/{receipt}', function (\App\Models\Receipt $receipt) {
 })->name('receipt.pdf');
 
 Route::get('quotation/pdf/{quotation}', function (\App\Models\Quotation $quotation) {
-    $pdf = \Spatie\LaravelPdf\Facades\Pdf::view('documents.quotation', [
-        'quotation' => $quotation,
-        'image' => base64_encode(file_get_contents(public_path('logo.png'))),
-        'settings' => Settings::all()
-    ]);
+    $pdf = \App\Services\QuotationPdfGenerator::generate($quotation);
 
-    return $pdf->format('a4')->toResponse(request());
+    return $pdf
+        ->format('a4')
+        ->toResponse(request());
 })->name('quotation.pdf');
 
 Route::get('invoice/pdf/{invoice}', function (\App\Models\Invoice $invoice) {

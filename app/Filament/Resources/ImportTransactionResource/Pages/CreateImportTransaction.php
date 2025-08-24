@@ -10,6 +10,9 @@ use App\Models\Unity;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -34,14 +37,27 @@ class CreateImportTransaction extends CreateRecord
                                 ->preload()
                                 ->searchable()
                                 ->required(),
-                            Forms\Components\TextInput::make('product.sku')
-                                ->label('Product SKU')
+                            Checkbox::make('is_product_exists')
+                                    ->live()
+                                    ->default(true),
+                            Select::make('product_id')
+                                ->live()
+                                ->preload()
+                                ->searchable()
                                 ->required()
-                                ->reactive()
-                                ->debounce()
-                                ->afterStateUpdated(function (callable $set, ?string $state) {
-                                    $exists = \App\Models\Product::query()->where('sku', $state)->exists();
-                                    $set('product_section_visible', !$exists);
+                                ->visible(function(Get $get) {
+                                    return $get('is_product_exists');
+                                })
+                                ->options(function(){
+                                    $products = Product::all();
+                                    // product : id = name-sku
+                                    $options = [];
+
+                                    $products->each(function($product) use (&$options) {
+                                        $options[$product->id] = sprintf("%s - %s", $product->description, $product->sku);
+                                    });
+
+                                    return $options;
                                 }),
                             Forms\Components\TextInput::make('buy_price')
                                 ->label('Buy Price')
@@ -67,13 +83,18 @@ class CreateImportTransaction extends CreateRecord
                                     'pickup' => 'Pick Up',
                                 ])
                                 ->required(),
+                            Checkbox::make('is_delivery_free')
+                                ->live()
+                                ->label('Is Delivery Free?')
+                                ->default(true),
                             Forms\Components\TextInput::make('delivery_price')
+                                ->visible(fn(Forms\Get $get) => !$get('is_delivery_free'))
                                 ->label('Delivery Price')
                                 ->required()
                                 ->numeric(),
                         ]),
                     Forms\Components\Wizard\Step::make('Product Basic Information')
-                        ->visible(fn(Forms\Get $get) => $get('product_section_visible'))
+                        ->visible(fn(Forms\Get $get) => !$get('is_product_exists'))
                         ->schema([
                             Forms\Components\Select::make('product.category_id')
                                 ->label('Category')
@@ -117,7 +138,7 @@ class CreateImportTransaction extends CreateRecord
                                 ->label('Remark'),
                         ]),
                     Forms\Components\Wizard\Step::make('Product image')
-                        ->visible(fn(Forms\Get $get) => $get('product_section_visible'))
+                        ->visible(fn(Forms\Get $get) => !$get('is_product_exists'))
                         ->schema([
                             Forms\Components\FileUpload::make('product.image')
                                 ->label('Upload Product Logo'),
@@ -129,18 +150,11 @@ class CreateImportTransaction extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         try{
-            $product_sku = $data['product']['sku'];
-            // check if already exists
-            $product = null;
-            if( Product::query()->where('sku', $product_sku)->exists() ){
-                $this->productExists = true;
-                $product = Product::query()->where('sku', $product_sku)->first();
-            }
-
-
-            return DB::transaction(function () use ($data, $product){
-                if( !$this->productExists ){
+            return DB::transaction(function () use ($data){
+                if( ! $data['is_product_exists'] ){
                     $product = Product::query()->create($data['product']);
+                }else{
+                    $product = Product::query()->findOrFail($data['product_id']);
                 }
 
                 $data['product_id'] = $product->id;

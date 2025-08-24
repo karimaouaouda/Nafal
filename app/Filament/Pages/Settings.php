@@ -239,6 +239,26 @@ class Settings extends Page
             ]);
     }
 
+    public function VatPercentForm(Form $form): Form
+    {
+        return $form
+            ->operation('create')
+            ->statePath('settings.'.\App\Enums\Settings::VAT_PERCENT->value)
+            ->schema([
+                TextInput::make('vat_percent')
+                    ->label('VAT Percent')
+                    ->default($this->settings[\App\Enums\Settings::VAT_PERCENT->value] ?? 15)
+                    ->numeric()
+                    ->maxValue(100)
+                    ->minValue(0)
+                    ->required(),
+                \Filament\Forms\Components\Actions::make([
+                    Action::make('save')
+                        ->action('save'),
+                ]),
+            ]);
+    }
+
     public function CompanyEmailForm(Form $form): Form
     {
         return $form
@@ -271,6 +291,8 @@ class Settings extends Page
             ]);
     }
 
+
+
     protected function getForms(): array
     {
         return [
@@ -281,6 +303,7 @@ class Settings extends Page
             'CompanyBioForm',
             'CompanyWebsiteForm',
             'CompanyEmailForm',
+            'VatPercentForm'
         ];
     }
 }

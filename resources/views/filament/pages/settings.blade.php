@@ -71,7 +71,14 @@
         {{ $this->CompanyWebsiteForm }}
     </x-filament::section>
 
-
-
+    <x-filament::section icon="heroicon-o-currency-dollar" collapsible collapsed>
+        <x-slot name="heading">
+            VAT Percent
+        </x-slot>
+        <x-slot name="description">
+            this is the VAT percent which will be applied to quotations, invoices and transactions
+        </x-slot>
+        {{ $this->VatPercentForm }}
+    </x-filament::section>
 
 </x-filament-panels::page>

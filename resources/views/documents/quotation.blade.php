@@ -70,11 +70,8 @@
                     <h2 class="text-xl capitalize">
                         VatNo. {{ $quotation?->transaction->customer->vat_number ?? "300054789" }}
                     </h2>
-                    <h2 class="text-xl capitalize">
-                        address: al jubail - al badiyah st. makkah dist
-                    </h2>
-                    <h2 class="text-xl capitalize" dir="rtl">
-                        العنوان: الجبيل - شارع البادية - حي مكة
+                    <h2 class="text-sm leading-8 font-semibold capitalize">
+                        address/العنوان: {{ $quotation?->transaction->customer->address->full_address ?? "some address" }}
                     </h2>
 
                 </div>
@@ -122,7 +119,7 @@
                             Subtotal
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            {{ $sum ?? 1500 }}
+                            {{ $total }}
                         </div>
 
                     </div>
@@ -131,7 +128,7 @@
                             VAT
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            100.00
+                            {{ $vat }}
                         </div>
                     </div>
                     <div class="row flex">
@@ -139,19 +136,19 @@
                             Total
                         </div>
                         <div class="cell min-w-1/5 text-right border border-black px-2">
-                            {{ $sum + 100.00 }}
+                            {{ $total + $vat }}
                         </div>
 
                     </div>
                     <div class="row border-black text-center">
                         <div class="cell flex-1 border border-black px-2">
                             <h2 class="text-md capitalize">
-                                {{ \NumberToWords\NumberToWords::transformNumber('en', $sum + 100) }} Only
+                                {{ \NumberToWords\NumberToWords::transformNumber('en', $total + $vat) }} Only
                             </h2>
                         </div>
                         <div class="cell flex-1 border border-black px-2">
                             <h2 class="text-md capitalize" dir="rtl">
-                                 {{ \NumberToWords\NumberToWords::transformNumber('ar', $sum + 100) }} فقط
+                                 {{ \NumberToWords\NumberToWords::transformNumber('ar', $total + $vat) }} فقط
                             </h2>
                         </div>
                     </div>

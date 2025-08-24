@@ -20,4 +20,6 @@ enum Settings: string
 
     case COMPANY_BIO = 'company_bio';
 
+    case VAT_PERCENT = 'vat_percent';
+
 }
